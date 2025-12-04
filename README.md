@@ -27,46 +27,59 @@ To implement HASH ALGORITHM
 
 
 ## Program:
-#### NAME :PREETHI A K
-#### REGISTER NUMBER: 212223230156
 ```
 #include <stdio.h>
 #include <string.h>
 
-void caesar(char *in, int s, char *out, int enc){
-    for(int i=0; in[i]; i++){
-        char c=in[i];
-        if(c>='A' && c<='Z') out[i]=(c-'A'+ (enc?s:26-s))%26+'A';
-        else if(c>='a' && c<='z') out[i]=(c-'a'+ (enc?s:26-s))%26+'a';
-        else out[i]=c;
+
+void computeSimpleHash(const char *message, unsigned char *hash) {
+    unsigned char temp = 0;
+
+   
+    for (int i = 0; message[i] != '\0'; i++) {
+        temp = temp ^ message[i]; 
+        temp += message[i];       
     }
-    out[strlen(in)] = '\0';
+    
+ 
+    *hash = temp;
 }
 
-int main(){
-    char text[100], enc[100], dec[100];
-    int shift;
+int main() {
+    char message[256];     
+    unsigned char hash;     
+    char receivedHash[3];  
 
-    printf("Enter text: ");
-    fgets(text,100,stdin);
-    text[strcspn(text,"\n")] = 0;
+   
+    printf("Enter the message: ");
+    scanf("%s", message);
 
-    printf("Shift (1–25): ");
-    scanf("%d",&shift);
+   
+    computeSimpleHash(message, &hash);
 
-    caesar(text,shift,enc,1);
-    printf("Encrypted: %s\n", enc);
+  
+    printf("Computed Hash (in hex): %02x\n", hash);
 
-    caesar(enc,shift,dec,0);
-    printf("Decrypted: %s\n", dec);
+   
+    printf("Enter the received hash (in hex): ");
+    scanf("%s", receivedHash);
+
+   
+    unsigned int receivedHashValue;
+    sscanf(receivedHash, "%02x", &receivedHashValue);
+
+    
+    if (hash == receivedHashValue) {
+        printf("Hash verification successful. Message is unchanged.\n");
+    } else {
+        printf("Hash verification failed. Message has been altered.\n");
+    }
 
     return 0;
 }
-
 ```
-
 ## Output:
-<img width="1674" height="624" alt="image" src="https://github.com/user-attachments/assets/b146c3c8-a275-4adb-a881-763651493ccd" />
+<img width="1673" height="659" alt="image" src="https://github.com/user-attachments/assets/e0bd3aa4-a69d-46af-a263-1c9b152220b7" />
 
 ## Result:
 The program is executed successfully.
